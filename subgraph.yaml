@@ -1,0 +1,28 @@
+specVersion: 0.0.2
+description: the user staked balances on the BaoFinance protocol.
+repository: 
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: BaoMasterFarmer
+    network: mainnet
+    source:
+      address: '0xBD530a1c060DC600b951f16dc656E4EA451d1A2D'
+      abi: BaoMasterFarmer
+      startBlock: 11395074
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - StakedBalance
+      abis:
+        - name: BaoMasterFarmer
+          file: ./abis/BaoMasterFarmer.json
+      eventHandlers:
+        - event: Withdraw(indexed address,indexed uint256,uint256)
+          handler: handleWithdraw
+        - event: Deposit(indexed address,indexed uint256,uint256)
+          handler: handleDeposit
+      file: ./src/mapping.ts
